@@ -1,7 +1,7 @@
 # Set-Windows10-Optimizations
 
 Script performs all necessary operations in 6 sections:
-
+  
 **1. Applying HKCU Settings to Registry**
 
 All operations performed for default user registry file C:\Users\Default\NTUSER.DAT.
@@ -12,6 +12,7 @@ Disables telemetry, ads, set explorer settings.
 
 
 **2. Applying HKLM Settings**
+
 Disables telemetry and ads, configures updates, IE.
 
 
@@ -42,9 +43,9 @@ Removes annoying Microsift and 3rd party modern apps and capabilities.
 Script can be primarly used for unattended MDT Windows deployment, it has no user interaction, just comment or uncomment necessary lines.
 
 Usage:
-
+```powershell
 Set-Windows10-Optimizations.ps1
-
+```
 
 **Parameters:**
 
