@@ -1,5 +1,5 @@
 #
-# Kosarev Albert, 2018
+# Kosarev Albert, 2020
 #
 # Script performs all necessary operations to optimize Windows 10 in 6 sections:
 # 1. Applying HKCU Settings to Registry
@@ -19,6 +19,8 @@
 # Script can be primarly used for unattended MDT Windows deployment, it has no user interaction, just comment or uncomment necessary lines.
 # Usage (no parameters):
 # Set-Windows10-Optimizations.ps1
+#
+# Optimized to run on recent windows 10 builds, e.g. 1709, 1803, 1809, 1903, 1909, 2004
 #
 # Sources:
 # https://github.com/Disassembler0/Win10-Initial-Setup-Script/
@@ -232,7 +234,8 @@ foreach ($userSid in $UserSids)
 	# Can be problems with notofications in 1809, works ok in 1903:
 	reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" /v "GlobalUserDisabled" /t REG_DWORD /d "1" /f >$null
 	# dont work for default profile
-	Get-ChildItem "hku:\$($userSid)\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" -Exclude "Microsoft.Windows.Cortana*","Microsoft.Windows.ShellExperienceHost*","Microsoft.Windows.SecHealthUI*" | ForEach-Object {
+	# since 2004 cortana = search
+	Get-ChildItem "hku:\$($userSid)\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" -Exclude "Microsoft.Windows.Search*", "Microsoft.Windows.Cortana*","Microsoft.Windows.ShellExperienceHost*","Microsoft.Windows.SecHealthUI*" | ForEach-Object {
 			Set-ItemProperty -Path $_.PsPath -Name "Disabled" -Type DWord -Value 1
 			Set-ItemProperty -Path $_.PsPath -Name "DisabledByUser" -Type DWord -Value 1
 		}
@@ -274,7 +277,9 @@ foreach ($userSid in $UserSids)
 	reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v "SubscribedContent-353696Enabled" /t REG_DWORD /d "0" /f >$null
 	reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v "SubscribedContent-353698Enabled" /t REG_DWORD /d "0" /f >$null
 	reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v "SubscribedContent-88000105Enabled" /t REG_DWORD /d "0" /f >$null
-		
+	# Turn Off 'Get even more out of Windows Suggestions' since 2004
+	# reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" /v "ScoobeSystemSettingEnabled" /t REG_DWORD /d "0" /f >$null
+	
 	# 1. Disable 3rd party ads for Enterprise/Pro
 	reg add "hku\$($userSid)\Software\Policies\Microsoft\Windows\CloudContent" /v "DisableThirdPartySuggestions" /t REG_DWORD /d "1" /f >$null
 	# 2. Disable Windows Spotlight notifications in Action Center
