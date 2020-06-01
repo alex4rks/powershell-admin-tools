@@ -277,8 +277,8 @@ foreach ($userSid in $UserSids)
 	reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v "SubscribedContent-353696Enabled" /t REG_DWORD /d "0" /f >$null
 	reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v "SubscribedContent-353698Enabled" /t REG_DWORD /d "0" /f >$null
 	reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" /v "SubscribedContent-88000105Enabled" /t REG_DWORD /d "0" /f >$null
-	# Turn Off 'Get even more out of Windows Suggestions' since 2004
-	# reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" /v "ScoobeSystemSettingEnabled" /t REG_DWORD /d "0" /f >$null
+	# Disable 'Suggest ways I can finish setting up my device to get most out of Windows', since 2004
+	reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\UserProfileEngagement" /v "ScoobeSystemSettingEnabled" /t REG_DWORD /d "0" /f >$null
 	
 	# 1. Disable 3rd party ads for Enterprise/Pro
 	reg add "hku\$($userSid)\Software\Policies\Microsoft\Windows\CloudContent" /v "DisableThirdPartySuggestions" /t REG_DWORD /d "1" /f >$null
