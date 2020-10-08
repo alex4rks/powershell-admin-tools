@@ -29,7 +29,7 @@
 # https://github.com/W4RH4WK/Debloat-Windows-10/blob/master/scripts/
 # https://github.com/hahndorf/Set-Privacy/blob/master/Set-Privacy.ps1
 #
-# https://github.com/farag2/Windows-10-Setup-Script/blob/master/Win%2010.ps1
+# https://github.com/farag2/Windows-10-Sophia-Script/blob/master/Sophia/Sophia.psm1
 
 if ($PSVersionTable.BuildVersion.Major -lt 10) {
     Write-Host This OS version is not supported -ForegroundColor Red
@@ -161,15 +161,15 @@ foreach ($userSid in $UserSids)
 	# location sensor:
 	reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\DeviceAccess\Global\{BFA794E4-F964-4FDB-90F6-51056BFE4B44}" /v "Value" /t REG_SZ /d "Deny" /f >$null
 	# Camera:
-	reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\DeviceAccess\Global\{E5323777-F976-4f5b-9B55-B94699C46E44}" /v "Value" /t REG_SZ /d "Deny" /f >$null
+	# reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\DeviceAccess\Global\{E5323777-F976-4f5b-9B55-B94699C46E44}" /v "Value" /t REG_SZ /d "Deny" /f >$null
 	# Mic:
 	# reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\DeviceAccess\Global\{2EEF81BE-33FA-4800-9670-1CD474972C3F}" /v "Value" /t REG_SZ /d "Deny" /f >$null
 	# Calendar: 
-	reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\DeviceAccess\Global\{D89823BA-7180-4B81-B50C-7E471E6121A3}" /v "Value" /t REG_SZ /d "Deny" /f >$null
+	# reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\DeviceAccess\Global\{D89823BA-7180-4B81-B50C-7E471E6121A3}" /v "Value" /t REG_SZ /d "Deny" /f >$null
 	# SMS, MMS:
 	reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\DeviceAccess\Global\{992AFA70-6F47-4148-B3E9-3003349C1548}" /v "Value" /t REG_SZ /d "Deny" /f >$null
 	# Wireless interfaces:
-	reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\DeviceAccess\Global\{A8804298-2D5F-42E3-9531-9C8C39EB29CE}" /v "Value" /t REG_SZ /d "Deny" /f >$null
+	# reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\DeviceAccess\Global\{A8804298-2D5F-42E3-9531-9C8C39EB29CE}" /v "Value" /t REG_SZ /d "Deny" /f >$null
 	# Account info:
 	reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\DeviceAccess\Global\{C1D23ACC-752B-43E5-8448-8D0E519CD6D6}" /v "Value" /t REG_SZ /d "Deny" /f >$null
 	# Diagnostics:
@@ -177,7 +177,7 @@ foreach ($userSid in $UserSids)
 	# Call History:
 	reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\DeviceAccess\Global\{8BC668CF-7728-45BD-93F8-CF2B3B41D7AB}" /v "Value" /t REG_SZ /d "Deny" /f >$null
 	# Email:
-	reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\DeviceAccess\Global\{9231CB4C-BF57-4AF3-8C55-FDA7BFCC04C5}" /v "Value" /t REG_SZ /d "Deny" /f >$null
+	# reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\DeviceAccess\Global\{9231CB4C-BF57-4AF3-8C55-FDA7BFCC04C5}" /v "Value" /t REG_SZ /d "Deny" /f >$null
 	# Tasks:
 	reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\DeviceAccess\Global\{E390DF20-07DF-446D-B962-F5C953062741}" /v "Value" /t REG_SZ /d "Deny" /f >$null
 	# App notifications:
@@ -229,7 +229,9 @@ foreach ($userSid in $UserSids)
 
 	# Disable Network Thumbs
 	reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "DisableThumbnailsOnNetworkFolders" /t REG_DWORD /d "1" /f >$null
-
+	# Disable Bing search in the Start Menu (USA only)
+	reg add "hku\$($userSid)\Software\Policies\Microsoft\Windows\Explorer" /v "DisableSearchBoxSuggestions" /t REG_DWORD /d "1" /f >$null
+	
 	# Disable Let apps run in the background, since Creators Update
 	# Can be problems with notofications in 1809, works ok in 1903:
 	reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\BackgroundAccessApplications" /v "GlobalUserDisabled" /t REG_DWORD /d "1" /f >$null
@@ -285,6 +287,9 @@ foreach ($userSid in $UserSids)
 	# 2. Disable Windows Spotlight notifications in Action Center
 	reg add "hku\$($userSid)\Software\Policies\Microsoft\Windows\CloudContent" /v "DisableWindowsSpotlightOnActionCenter" /t REG_DWORD /d "1" /f >$null
 		
+	# Do not offer tailored experiences based on the diagnostic data setting (current user only)
+	reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\Privacy" /v "TailoredExperiencesWithDiagnosticDataEnabled" /t REG_DWORD /d "0" /f >$null
+		
 	# Disable Storage Sense
 	reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy" /v "01" /t REG_DWORD /d "1" /f >$null
 
@@ -299,6 +304,8 @@ foreach ($userSid in $UserSids)
 	reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" /v "PeopleBand" /t REG_DWORD /d "0" /f >$null
 	# Show all tray icons
 	# reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\Explorer" /v "EnableAutoTray" /t REG_DWORD /d "0" /f >$null 2>$null
+	# Always open the file transfer dialog box in the detailed mode
+	reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager" /v "EnthusiastMode" /t REG_DWORD /d "1" /f >$null
 	
 	# Disables GameDVR (GameDVR can reduce fps in games)
 	reg add "hku\$($userSid)\System\GameConfigStore" /v "GameDVR_Enabled" /t REG_DWORD /d "0" /f >$null
@@ -350,6 +357,7 @@ reg add "HKLM\Software\Policies\Microsoft\Windows\CloudContent" /v "DisableWindo
 reg add "HKLM\Software\Policies\Microsoft\Windows\CloudContent" /v "DisableSoftLanding" /t REG_DWORD /d "1" /f >$null
 # Disable video tips in Settings app
 reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "AllowOnlineTips" /t REG_DWORD /d "0" /f >$null
+
 
 # Disable first logon animations
 reg add "HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System" /v "EnableFirstLogonAnimation" /t REG_DWORD /d "0" /f >$null
