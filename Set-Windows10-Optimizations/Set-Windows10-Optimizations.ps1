@@ -626,6 +626,7 @@ Set-Service "HomeGroupProvider" -StartupType "Disabled" -EA 0 # HomeGroup
 Write-Host "5. Removing Apps"
 $AppRemover = {
 	$Apps = @(
+		"Microsoft.549981C3F5F10", # cortana app
 		"Microsoft.3DBuilder",
 		"Microsoft.Print3D",
 		"Microsoft.BingFinance",
