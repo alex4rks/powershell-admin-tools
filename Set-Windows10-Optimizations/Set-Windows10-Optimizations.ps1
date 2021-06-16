@@ -302,8 +302,6 @@ foreach ($userSid in $UserSids)
 	reg add "hku\$($userSid)\Control Panel\Desktop" /v "MenuShowDelay" /t REG_SZ /d "100" /f >$null
 	# Hide Taskbar People icon
 	reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" /v "PeopleBand" /t REG_DWORD /d "0" /f >$null
-	# Hide Cortana Button
-	reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /v "ShowCortanaButton" /t REG_DWORD /d "0" /f >$null
 	# Show all tray icons
 	# reg add "hku\$($userSid)\Software\Microsoft\Windows\CurrentVersion\Explorer" /v "EnableAutoTray" /t REG_DWORD /d "0" /f >$null 2>$null
 	# Always open the file transfer dialog box in the detailed mode
@@ -375,8 +373,6 @@ reg add "HKLM\Software\Policies\Microsoft\Windows\Windows Search" /v "AllowSearc
 # Disable search web when searching pc
 reg add "HKLM\Software\Policies\Microsoft\Windows\Windows Search" /v "ConnectedSearchUseWeb" /t REG_DWORD /d "0" /f >$null
 reg add "HKLM\Software\Policies\Microsoft\Windows\Windows Search" /v "ConnectedSearchUseWebOverMeteredConnections" /t REG_DWORD /d "0" /f >$null
-# Disable News feeds in taskbar, since 20H2
-reg add "HKLM\Software\Policies\Microsoft\Windows\Windows Feeds" /v "EnableFeeds" /t REG_DWORD /d "0" /f >$null
 
 # IE
 # IE - Disable first run
@@ -395,20 +391,15 @@ reg add "HKLM\Software\Policies\Microsoft\Internet Explorer" /v "AllowServicePow
 reg add "HKLM\Software\Policies\Microsoft\Internet Explorer\Infodelivery\Restrictions" /v "NoUpdateCheck" /t REG_DWORD /d "1" /f >$null
 # IE - geolocation stop
 reg add "HKLM\Software\Policies\Microsoft\Internet Explorer\Geolocation" /v "PolicyDisableGeolocation" /t REG_DWORD /d "1" /f >$null
-
-# Edge - Disable first run
-reg add "HKLM\Software\Policies\Microsoft\MicrosoftEdge\Main" /v "PreventFirstRunPage" /t REG_DWORD /d "1" /f >$null
 # Edge - disable preload at startup
 reg add "HKLM\Software\Policies\Microsoft\MicrosoftEdge\Main" /v "AllowPrelaunch" /t REG_DWORD /d "0" /f >$null
 reg add "HKLM\Software\Policies\Microsoft\MicrosoftEdge\TabPreloader" /v "AllowTabPreloading" /t REG_DWORD /d "0" /f >$null
 # Edge - Disable search suggestions
 reg add "HKLM\Software\Policies\Microsoft\MicrosoftEdge\SearchScopes" /v "ShowSearchSuggestionsGlobal" /t REG_DWORD /d "0" /f >$null
 # Edge - Disable phishing filter
-# reg add "HKLM\Software\Policies\Microsoft\MicrosoftEdge\PhishingFilter" /v "EnabledV9" /t REG_DWORD /d "0" /f >$null
+reg add "HKLM\Software\Policies\Microsoft\MicrosoftEdge\PhishingFilter" /v "EnabledV9" /t REG_DWORD /d "0" /f >$null
 # Edge - disable EDGE help tips
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\EdgeUI" /v "DisableHelpSticker" /t REG_DWORD /d "1" /f >$null
-# Edge - Remove shortcut
-Remove-Item -Path "‪C:\Users\Public\Desktop\Microsoft Edge.lnk" -Force 2>$null
 
 # Send Settings To Cloud
 reg add "HKLM\Software\Policies\Microsoft\Windows\SettingSync" /v "DisableSettingSync" /t REG_DWORD /d "2" /f >$null
