@@ -875,14 +875,15 @@ reg add "HKLM\Software\Microsoft\Windows NT\CurrentVersion\Schedule\Maintenance"
 # Enable registry backup: http://www.outsidethebox.ms/19515/
 reg add "HKLM\System\CurrentControlSet\Control\Session Manager\Configuration Manager" /v "EnablePeriodicBackup" /t REG_DWORD /d 1 /f >$null
 
-# NIC Power Options: disable "Allow the computer to turn off this device to save power"
+<# NIC Power Options: disable "Allow the computer to turn off this device to save power"
+# For MDT installation step: code have to be commented out because it invokes pc reboot
 Get-NetAdapter -Physical |
 Get-NetAdapterPowerManagement |
 ForEach-Object{
     $_.AllowComputerToTurnOffDevice = 'Disabled' 
     $_ | Set-NetAdapterPowerManagement
 }
-
+#>
 
 # Clean Start menu & Taskbar, min = 1 item
 Write-Host "Default Start Menu"
